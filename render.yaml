@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: fixmate
+    runtime: node
+    plan: free
+    buildCommand: npm install && npx expo export -p web
+    startCommand: node server.js
+    envVars:
+      - key: NODE_VERSION
+        value: 20.18.0
+      - key: EXPO_PUBLIC_APP_ENV
+        value: production
