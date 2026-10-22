@@ -1,22 +1,17 @@
+import React, { useEffect } from 'react';
 import { useFonts } from 'expo-font';
-import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
 import 'react-native-reanimated';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { Palette } from '@/constants/Colors';
 
-import { useColorScheme } from '@/components/useColorScheme';
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+export { ErrorBoundary } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  anchor: '(tabs)',
+  initialRouteName: '(tabs)',
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -24,9 +19,8 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
-    if (error) throw error;
+    if (error) console.warn('Font load error:', error);
   }, [error]);
 
   useEffect(() => {
@@ -35,22 +29,61 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  if (!loaded) {
-    return null;
-  }
-
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
+    <AuthProvider>
+      <Stack
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: Palette.paperWhite,
+          },
+          headerTintColor: Palette.charcoal,
+          headerTitleStyle: {
+            fontFamily: 'serif',
+            fontWeight: '700',
+          },
+          contentStyle: {
+            backgroundColor: Palette.warmIvory,
+          },
+        }}
+      >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        <Stack.Screen
+          name="book"
+          options={{
+            presentation: 'modal',
+            title: 'Schedule Service Order',
+            headerBackTitle: 'Cancel',
+          }}
+        />
+        <Stack.Screen
+          name="booking/[id]"
+          options={{
+            title: 'Service Work Order',
+            headerBackTitle: 'Back',
+          }}
+        />
+        <Stack.Screen
+          name="provider/[id]"
+          options={{
+            title: 'Technician Field Profile',
+            headerBackTitle: 'Back',
+          }}
+        />
+        <Stack.Screen
+          name="provider-workspace"
+          options={{
+            title: 'Provider Field Tool',
+            headerBackTitle: 'Exit',
+          }}
+        />
+        <Stack.Screen
+          name="admin-dashboard"
+          options={{
+            title: 'Platform Administration',
+            headerBackTitle: 'Exit',
+          }}
+        />
       </Stack>
-    </ThemeProvider>
+    </AuthProvider>
   );
 }
