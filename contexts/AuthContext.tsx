@@ -6,6 +6,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Profile, UserRole } from '@/types/database';
 import { dataStore } from '@/services/dataStore';
+import { SEED_PROFILES } from '@/services/mockData';
 
 interface AuthContextType {
   user: Profile | null;
@@ -24,9 +25,9 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<Profile | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [availableProfiles, setAvailableProfiles] = useState<Profile[]>([]);
+  const [user, setUser] = useState<Profile | null>(() => SEED_PROFILES[0]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [availableProfiles, setAvailableProfiles] = useState<Profile[]>(() => SEED_PROFILES);
 
   const loadUser = async () => {
     try {

@@ -24,17 +24,18 @@ import {
 } from '@/components/fieldnotes';
 import { useAuth } from '@/contexts/AuthContext';
 import { dataStore } from '@/services/dataStore';
+import { SEED_BOOKINGS, SEED_CATEGORIES, SEED_PROVIDER_PROFILES } from '@/services/mockData';
 import { Booking, ProviderProfile, ServiceCategory } from '@/types/database';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { user, role } = useAuth();
 
-  const [categories, setCategories] = useState<ServiceCategory[]>([]);
-  const [featuredProviders, setFeaturedProviders] = useState<ProviderProfile[]>([]);
-  const [activeBooking, setActiveBooking] = useState<Booking | null>(null);
+  const [categories, setCategories] = useState<ServiceCategory[]>(() => SEED_CATEGORIES);
+  const [featuredProviders, setFeaturedProviders] = useState<ProviderProfile[]>(() => SEED_PROVIDER_PROFILES.slice(0, 3));
+  const [activeBooking, setActiveBooking] = useState<Booking | null>(() => SEED_BOOKINGS[0]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
   const loadData = async () => {

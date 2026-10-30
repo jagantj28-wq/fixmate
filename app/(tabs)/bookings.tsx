@@ -19,6 +19,7 @@ import {
 } from '@/components/fieldnotes';
 import { useAuth } from '@/contexts/AuthContext';
 import { dataStore } from '@/services/dataStore';
+import { SEED_BOOKINGS } from '@/services/mockData';
 import { Booking } from '@/types/database';
 
 export default function BookingsScreen() {
@@ -26,8 +27,8 @@ export default function BookingsScreen() {
   const { user } = useAuth();
 
   const [tab, setTab] = useState<'active' | 'history'>('active');
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [bookings, setBookings] = useState<Booking[]>(() => SEED_BOOKINGS);
+  const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
   const loadBookings = async () => {
