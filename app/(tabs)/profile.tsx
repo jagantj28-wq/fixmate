@@ -21,15 +21,15 @@ import {
 } from '@/components/fieldnotes';
 import { useAuth } from '@/contexts/AuthContext';
 import { dataStore, isLiveSupabaseConfigured } from '@/services/dataStore';
-import { SEED_CUSTOMER_ADDRESSES, SEED_NOTIFICATIONS } from '@/services/mockData';
+import { SEED_ADDRESSES, SEED_NOTIFICATIONS } from '@/services/mockData';
 import { AppNotification, CustomerAddress } from '@/types/database';
 
 export default function ProfileScreen() {
   const router = useRouter();
   const { user, role, switchUser, availableProfiles, refreshUser } = useAuth();
 
-  const [addresses, setAddresses] = useState<CustomerAddress[]>(() => SEED_CUSTOMER_ADDRESSES);
-  const [notifications, setNotifications] = useState<AppNotification[]>(() => SEED_NOTIFICATIONS);
+  const [addresses, setAddresses] = useState<CustomerAddress[]>(() => SEED_ADDRESSES || []);
+  const [notifications, setNotifications] = useState<AppNotification[]>(() => SEED_NOTIFICATIONS || []);
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [showNotificationsModal, setShowNotificationsModal] = useState(false);
 

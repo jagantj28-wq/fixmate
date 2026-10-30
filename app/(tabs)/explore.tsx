@@ -20,15 +20,15 @@ import {
   SectionEyebrow,
 } from '@/components/fieldnotes';
 import { dataStore } from '@/services/dataStore';
-import { SEED_CATEGORIES, SEED_PROVIDER_PROFILES } from '@/services/mockData';
+import { SEED_CATEGORIES, SEED_PROVIDERS } from '@/services/mockData';
 import { ProviderProfile, ServiceCategory } from '@/types/database';
 
 export default function ExploreScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ q?: string; categoryId?: string }>();
 
-  const [categories, setCategories] = useState<ServiceCategory[]>(() => SEED_CATEGORIES);
-  const [providers, setProviders] = useState<ProviderProfile[]>(() => SEED_PROVIDER_PROFILES);
+  const [categories, setCategories] = useState<ServiceCategory[]>(() => SEED_CATEGORIES || []);
+  const [providers, setProviders] = useState<ProviderProfile[]>(() => SEED_PROVIDERS || []);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
     params.categoryId || null
   );

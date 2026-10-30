@@ -356,3 +356,8 @@ export const SEED_NOTIFICATIONS: AppNotification[] = [
     created_at: '2026-10-19T16:30:00Z',
   },
 ];
+
+// Compatibility aliases
+export const SEED_PROVIDER_PROFILES: ProviderProfile[] = SEED_PROVIDERS;
+export const SEED_CUSTOMER_ADDRESSES: CustomerAddress[] = SEED_ADDRESSES;
+

@@ -24,16 +24,20 @@ import {
 } from '@/components/fieldnotes';
 import { useAuth } from '@/contexts/AuthContext';
 import { dataStore } from '@/services/dataStore';
-import { SEED_BOOKINGS, SEED_CATEGORIES, SEED_PROVIDER_PROFILES } from '@/services/mockData';
+import { SEED_BOOKINGS, SEED_CATEGORIES, SEED_PROVIDERS } from '@/services/mockData';
 import { Booking, ProviderProfile, ServiceCategory } from '@/types/database';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { user, role } = useAuth();
 
-  const [categories, setCategories] = useState<ServiceCategory[]>(() => SEED_CATEGORIES);
-  const [featuredProviders, setFeaturedProviders] = useState<ProviderProfile[]>(() => SEED_PROVIDER_PROFILES.slice(0, 3));
-  const [activeBooking, setActiveBooking] = useState<Booking | null>(() => SEED_BOOKINGS[0]);
+  const [categories, setCategories] = useState<ServiceCategory[]>(() => SEED_CATEGORIES || []);
+  const [featuredProviders, setFeaturedProviders] = useState<ProviderProfile[]>(
+    () => (SEED_PROVIDERS || []).slice(0, 3)
+  );
+  const [activeBooking, setActiveBooking] = useState<Booking | null>(
+    () => (SEED_BOOKINGS && SEED_BOOKINGS[0]) || null
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -46,8 +50,8 @@ export default function HomeScreen() {
         user ? dataStore.getBookings({ customerId: user.id }) : [],
       ]);
 
-      setCategories(cats.filter((c) => c.active));
-      setFeaturedProviders(provs.slice(0, 3));
+      setCategories((cats || []).filter((c) => c.active));
+      setFeaturedProviders((provs || []).slice(0, 3));
 
       // Find the most immediate active booking (pending, accepted, or in_progress)
       const active = bookings.find((b) =>
